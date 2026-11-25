@@ -1,0 +1,44 @@
+# Le Bureau des agents, version en ligne : un Worker (connexion, ingestion, fichiers du bureau)
+# et un Durable Object « Hub » (l'état en direct de toutes les salles, WebSocket vers les navigateurs).
+name = "bureau-des-agents"
+main = "src/index.ts"
+compatibility_date = "2026-09-01"
+# Version en ligne seulement (le mode local, npm run local, n'en a pas besoin) :
+#  - ton compte Cloudflare : décommente la ligne suivante avec ton identifiant de compte (tableau de bord Cloudflare,
+#    colonne de droite « Account ID »), ou laisse wrangler le demander après `npx wrangler login` ;
+# account_id = "<TON_ACCOUNT_ID>"
+# l'adresse gratuite <nom>.<ton-sous-domaine>.workers.dev
+workers_dev = true
+
+# Un domaine à toi (facultatif, il doit déjà être dans ton compte Cloudflare) : Cloudflare crée l'enregistrement DNS
+# et le certificat de ce seul nom.
+# routes = [{ pattern = "bureau.ton-domaine.fr", custom_domain = true }]
+
+[assets]
+directory = "../dist"
+binding = "ASSETS"
+not_found_handling = "single-page-application"
+# tout passe d'abord par le Worker (rien n'est servi sans être connecté), sauf le code de l'application (/assets/*,
+# noms hachés, aucune donnée du bureau) : servi directement, il ne compte pas dans le quota gratuit de 100 000
+# requêtes Workers par jour du compte Cloudflare
+run_worker_first = ["/*", "!/assets/*"]
+
+# la version déployée : envoyée aux navigateurs, qui rechargent la page après une mise à jour
+[version_metadata]
+binding = "CF_VERSION_METADATA"
+
+[[durable_objects.bindings]]
+name = "HUB"
+class_name = "Hub"
+
+# les captures du fil des réalisations : bucket privé (aucune URL publique), servies par le Worker derrière la connexion
+[[r2_buckets]]
+binding = "MEDIA"
+bucket_name = "bureau-des-agents-media"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Hub"]
+
+# Secrets (wrangler secret put) : INGEST_TOKEN (jeton du collecteur), ACCESS_PASSWORD (mot de passe du site),
+# SESSION_SECRET (signature du cookie de connexion).

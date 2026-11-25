@@ -1,0 +1,53 @@
+{
+  "name": "bureau-des-agents",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Le Bureau des agents en pixel art : suis en direct tes propres sessions Claude Code (salles, sous-agents, réalisations, rapports), en local. D'après le Bureau des agents de devlikemasta (VibesMoney), licence MIT.",
+  "license": "MIT",
+  "author": "VibesMoney (https://vibesmoney.com)",
+  "homepage": "https://github.com/devlikemasta/bureau-des-agents#readme",
+  "keywords": [
+    "claude-code",
+    "agents",
+    "ai-agents",
+    "pixel-art",
+    "subagents",
+    "vibesmoney"
+  ],
+  "type": "module",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "start": "node scripts/check-node.mjs && vite build --logLevel warn && node server/index.ts --open",
+    "local": "node scripts/check-node.mjs && node scripts/local.ts",
+    "dev": "node scripts/dev.ts",
+    "build": "vite build",
+    "serve": "node server/index.ts",
+    "check": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p server/tsconfig.json && tsc --noEmit -p collector/tsconfig.json && tsc --noEmit -p worker/tsconfig.json",
+    "deploy": "vite build && cd worker && npx wrangler deploy",
+    "collector": "node collector/index.ts"
+  },
+  "dependencies": {
+    "@fontsource-variable/plus-jakarta-sans": "^5.3.0",
+    "@fontsource/pixelify-sans": "^5.3.0",
+    "html2canvas-pro": "^2.5.0",
+    "jspdf": "^4.2.1",
+    "marked": "^18.1.1",
+    "playwright-core": "^1.58.2",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "ws": "^8.22.0",
+    "zustand": "^5.0.15",
+    "zzfx": "^1.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/ws": "^8.18.2",
+    "@vitejs/plugin-react": "^6.1.2",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.4"
+  }
+}
