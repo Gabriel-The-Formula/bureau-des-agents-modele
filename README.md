@@ -21,6 +21,11 @@ Trois pages :
 Les prix affichés sont en **équivalent tarif API** : sur abonnement, ce n'est pas ce que tu paies, c'est ce que ça
 coûterait à l'API (table unique : `shared/pricing.ts`).
 
+## Bien l'utiliser
+
+Avant de lancer beaucoup de sessions, lis [docs/bonnes-pratiques.md](docs/bonnes-pratiques.md) : effort, choix du modèle,
+répartition des tâches et gestion des limites de ton abonnement, d'après des semaines d'usage intensif.
+
 ## Prérequis
 
 - macOS ou Linux.
